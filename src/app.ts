@@ -4,6 +4,7 @@ import express from "express";
 
 import { router as questionsRouter } from "./questions/router";
 import { todosRouter } from "./todos/router";
+import { connectMongo } from "./todos/dbConnection";
 
 const app = express();
 app.get("/", (req, res) => {
@@ -17,11 +18,19 @@ app.use(express.json());
 app.use("/questions", questionsRouter);
 app.use("/todos", todosRouter);
 
-app.listen(process.env.PORT, (): void => {
-  try {
-    console.log(`server is listening on ${process.env.PORT}`);
-  } catch (error) {
-    console.log(error);
-    process.exit();
-  }
-});
+const start = async () => {
+  //   const todos = await Todos.find({}).toArray();
+  //   console.log(todos);
+  await connectMongo();
+
+  app.listen(process.env.PORT, (): void => {
+    try {
+      console.log(`server is listening on ${process.env.PORT}`);
+    } catch (error) {
+      console.log(error);
+      process.exit();
+    }
+  });
+};
+
+start();

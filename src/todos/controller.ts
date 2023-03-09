@@ -1,63 +1,38 @@
-let todos = [
-  {
-    id: "1",
-    title: "test",
-    text: "test text",
-    resolved: false,
-  },
-  {
-    id: "2",
-    title: "test",
-    text: "test text",
-    resolved: false,
-  },
-  {
-    id: "3",
-    title: "test",
-    text: "test text",
-    resolved: false,
-  },
-];
-
-export const getTodos = (req, res) => {
-  res.json(todos);
+import { Todos } from "./model";
+export const getTodos = async (req, res) => {
+  const todos = await Todos.find({});
+  res.json({ todos });
 };
 
-export const getTodoById = (req, res) => {
-  const [todo] = todos.filter((item) => item.id === req.params.id);
-  if (!todo) {
-    res.json({ message: `There is no todo with id: ${req.params.id}` });
+export const getTodoById = async (req, res) => {
+  const id = req.params.id;
+  const todo = await Todos.findById(id);
+  if (todo._id != id) {
+    res.status(400).json({ message: `There is no todo with id ${id}` });
   }
-  res.json(todo);
+  res.json({ todo });
 };
 
-export const addTodo = (req, res) => {
-  const { title, text } = req.body;
-
-  todos.push({
-    id: new Date().getTime().toString(),
+export const addTodo = async (req, res) => {
+  const todo = new Todos({
     title: req.body.title,
     text: req.body.text,
-    resolved: false,
   });
-  res.json({ status: res.statusCode });
+  await todo.save();
+  res.json({ status: "success" });
 };
 
-export const editTodo = (req, res) => {
-  const { title, text } = req.body;
-
-  todos.forEach((todo) => {
-    if (todo.id === req.params.id) {
-      todo.title = title;
-      todo.text = text;
-    }
-
-    res.json({ status: res.statusCode });
+export const editTodo = async (req, res) => {
+  const { id } = req.params.id;
+  await Todos.findByIdAndUpdate(id, {
+    $set: { title: req.body.title, text: req.body.text },
   });
+
+  res.json({ message: "success" });
 };
 
-export const deleteTodo = (req, res) => {
-  todos = todos.filter((todo) => todo.id !== req.params.id);
-
-  res.json({ status: res.statusCode });
+export const deleteTodo = async (req, res) => {
+  const { id } = req.params.id;
+  await Todos.findByIdAndDelete(id);
+  res.json({ message: "success" });
 };

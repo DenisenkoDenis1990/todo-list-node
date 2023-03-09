@@ -17,7 +17,7 @@ todosRouter.get("/", getTodos);
 todosRouter.get("/:id", getTodoById);
 
 // POST todo
-todosRouter.post("/",validateTodo, addTodo);
+todosRouter.post("/", validateTodo, addTodo);
 
 // PUT todo by id
 todosRouter.put("/:id", editTodo);
