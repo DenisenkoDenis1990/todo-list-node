@@ -1,12 +1,17 @@
 import { Todos } from "./model";
 export const getTodos = async (req, res) => {
-  const todos = await Todos.find({});
-  res.json({ todos });
+  try {
+    console.log(req.user);
+    const todos = await Todos.find({ userId: req.user._id });
+    res.json({ todos });
+  } catch (error) {
+    res.json({ message: error.message });
+  }
 };
 
 export const getTodoById = async (req, res) => {
   const id = req.params.id;
-  const todo = await Todos.findById(id);
+  const todo = await Todos.findOne({ _id: id, userId: req.user._id });
   console.log(todo);
   if (!todo) {
     res.status(400).json({ message: `There is no todo with id ${id}` });
@@ -16,13 +21,18 @@ export const getTodoById = async (req, res) => {
 };
 
 export const addTodo = async (req, res) => {
-  const todo = new Todos({
-    title: req.body.title,
-    text: req.body.text,
-  });
-  await todo.save();
-  console.log(todo);
-  res.json({ status: "success" });
+  try {
+    const todo = new Todos({
+      title: req.body.title,
+      text: req.body.text,
+      userId: req.user._id,
+    });
+    await todo.save();
+    console.log(todo);
+    res.json({ status: "success" });
+  } catch (error) {
+    res.json({ message: error.message });
+  }
 };
 
 export const editTodo = async (req, res) => {

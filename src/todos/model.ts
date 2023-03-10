@@ -4,9 +4,9 @@ const todoSchema = new mongoose.Schema({
   title: {
     type: String,
     require: true,
-    unique: true,
   },
   text: { type: String, require: true },
+  userId: { type: String, require: true },
   resolved: {
     type: Boolean,
     default: false,

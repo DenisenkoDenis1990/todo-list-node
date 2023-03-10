@@ -7,8 +7,11 @@ import {
   deleteTodo,
 } from "./controller";
 import { validateTodo } from "./middleware";
+import { authMiddleware } from "../auth/middleware";
 
 export const todosRouter = express.Router();
+
+todosRouter.use(authMiddleware);
 
 // GET all todos
 todosRouter.get("/", getTodos);
