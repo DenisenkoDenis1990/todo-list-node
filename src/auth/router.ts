@@ -3,8 +3,8 @@ import { registrationController, loginController } from "./controller";
 
 export const authRouter = express.Router();
 
-// GET all todos
+// POST for user registration
 authRouter.post("/registaration", registrationController);
 
-// GET todo by id
+// POST for user log in
 authRouter.post("/login", loginController);

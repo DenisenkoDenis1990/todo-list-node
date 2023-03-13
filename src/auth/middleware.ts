@@ -1,7 +1,8 @@
 const jwt = require("jsonwebtoken");
+
 export const authMiddleware = (req, res, next) => {
   const [tokenType, token] = req.headers["authorization"].split(" ");
-  console.log(tokenType, token);
+
   if (!token) {
     next(new Error("Wrong token"));
   }
