@@ -7,6 +7,7 @@ const todoSchema = new mongoose.Schema({
   },
   text: { type: String, require: true },
   userId: { type: String, require: true },
+  listId: { type: String, require: true },
   resolved: {
     type: Boolean,
     default: false,

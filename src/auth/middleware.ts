@@ -1,10 +1,10 @@
 const jwt = require("jsonwebtoken");
 
 export const authMiddleware = (req, res, next) => {
-  const [tokenType, token] = req.headers["authorization"].split(" ");
+  const [_ , token] = req.headers["authorization"].split(" ");
 
   if (!token) {
-    next(new Error("Wrong token"));
+    next(new Error("Authorization Required"));
   }
   try {
     const user = jwt.decode(token, process.env.JWT_SECRET);

@@ -6,6 +6,7 @@ import { router as questionsRouter } from "./questions/router";
 import { todosRouter } from "./todos/router";
 import { connectMongo } from "./todos/dbConnection";
 import { authRouter } from "./auth/router";
+import { listsRouter } from "./list/router";
 
 const app = express();
 app.get("/", (req, res) => {
@@ -19,9 +20,9 @@ app.use(express.json());
 app.use("/questions", questionsRouter);
 app.use("/todos", todosRouter);
 app.use("/auth", authRouter);
+app.use("/lists", listsRouter);
 
 const start = async () => {
-
   await connectMongo();
 
   app.listen(process.env.PORT, (): void => {
