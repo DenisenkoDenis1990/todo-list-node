@@ -25,13 +25,14 @@ export const addTodo = async (req, res) => {
     const todo = new Todos({
       title: req.body.title,
       text: req.body.text,
+      listId: req.body.listId,
       userId: req.user._id,
     });
     await todo.save();
-    console.log(todo);
+    console.log(req.body.listId);
     res.json({ status: "success" });
   } catch (error) {
-    res.json({ message: error.message });
+    res.json(req.body);
   }
 };
 
